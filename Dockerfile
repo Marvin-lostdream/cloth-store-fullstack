@@ -33,8 +33,8 @@ WORKDIR /var/www/html
 # نسخ جميع الملفات
 COPY . .
 
-# تثبيت dependencies
-RUN composer install --optimize-autoloader --no-dev
+# تثبيت dependencies مع عرض التفاصيل
+RUN composer install --optimize-autoloader --no-dev -v
 
 # إعداد صلاحيات المجلدات
 RUN chown -R www-data:www-data /var/www/html \
