@@ -1,0 +1,110 @@
+* {
+    font-family: "Noto Sans Arabic", sans-serif;
+}
+
+.register,
+.login {
+    direction: rtl;
+    height: calc(100vh + 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.re-container {
+    width: 400px;
+    padding: 0;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0 0 8px 8px;
+}
+
+.re-container .sections {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+.re-container .sections li {
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.re-container .sections a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #1f2933;
+}
+
+.re-container .sections li:has(a.active) {
+    background-color: rgb(216, 216, 216);
+}
+
+.re-container .sections li:hover {
+    background-color: rgb(236, 236, 236);
+}
+
+.register-form,
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form {
+    margin-top: 75px;
+}
+
+.register-form div,
+.login-form div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.register-form div label,
+.login-form div label {
+    color: #1f2933;
+    font-weight: bold;
+}
+
+.register-form div input,
+.login-form div input {
+    padding: 8px;
+    border: 1px solid rgb(216, 216, 216);
+    border-radius: 4px;
+}
+
+.register-form div input:focus,
+.login-form div input:focus {
+    outline: 1px solid rgb(187, 187, 187);
+}
+
+.subBtn {
+    background-color: #1f2933;
+    color: white;
+    font-weight: bold;
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid rgb(236, 236, 236);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.subBtn:hover {
+    background-color: #2b3846;
+}
+
+.subBtn:disabled {
+    background-color: gray;
+}

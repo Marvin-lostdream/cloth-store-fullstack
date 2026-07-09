@@ -1,0 +1,292 @@
+* {
+    font-family: "Noto Sans Arabic", sans-serif;
+}
+
+.products-table {
+    position: relative;
+    top: 100px;
+    padding: 25px;
+    background-color: white;
+    margin: 30px 35px;
+    border-radius: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.table-header h2 {
+    color: #1c2a33;
+    font-size: clamp(18px, 5vw, 32px);
+}
+
+.table-header button {
+    text-decoration: none;
+    font-size: clamp(12px, 3vw, 18px);
+    background-image: linear-gradient(135deg, #1c2a33, #314857);
+    background-size: 200% 200%;
+    background-position: 0% 0%;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.table-header button:hover {
+    background-position: 100% 100%;
+    transform: translateY(-2px);
+}
+
+/* Start Table Style */
+
+.products-table table {
+    width: 100%;
+
+    font-size: clamp(12px, 4vw, 18px);
+}
+
+.products-table table thead {
+    background-color: rgb(212, 212, 212);
+}
+
+.products-table table thead tr th {
+    padding: 15px 20px;
+    font-size: clamp(12px, 2vw, 20px);
+    font-weight: bold;
+    text-align: right;
+    border-bottom: 2px solid #a3b3bd;
+    letter-spacing: 0.5px;
+}
+
+.products-table table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.products-table table tbody tr:hover {
+    background-color: rgb(245, 245, 245);
+}
+
+.products-table table tbody tr td {
+    padding: 12px 8px;
+    font-size: clamp(12px, 2vw, 16px);
+    border-bottom: 1px solid #edf2f7;
+    color: #2d3748;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+
+.status.active {
+    background-color: #56ec56;
+    color: #000000;
+}
+
+.status.inactive {
+    background-color: #ec5656;
+    color: #000000;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.action-btn {
+    width: clamp(24px, 5vw, 36px);
+    height: clamp(24px, 5vw, 36px);
+    background-color: transparent;
+    border: none;
+    font-size: clamp(12px, 2vw, 16px);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.action-btn.edit {
+    color: rgb(24, 35, 44);
+    background-color: rgba(143, 205, 255, 0.3);
+}
+
+.action-btn.edit:hover {
+    transform: translateY(-2px);
+    background-color: rgba(143, 205, 255, 0.6);
+    box-shadow: 0 4px 2px rgba(81, 115, 143, 0.6);
+}
+
+.action-btn.delete {
+    color: rgb(116, 64, 64);
+    background-color: rgba(255, 143, 143, 0.3);
+}
+
+.action-btn.delete:hover {
+    transform: translateY(-2px);
+    background-color: rgba(255, 143, 143, 0.6);
+    box-shadow: 0 4px 2px rgba(177, 99, 99, 0.6);
+}
+
+/* End Table Style */
+
+/* ستايل ال Modal */
+
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.modal.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    width: 720px;
+    max-width: 90%;
+    height: 90vh;
+    max-height: fit-content;
+    background-color: white;
+    padding: 30px 35px;
+    border-radius: 8px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: clamp(16px, 4vw, 28px);
+    cursor: pointer;
+    color: #999;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: clamp(14px, 3vw, 18px);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: 2px solid #ccc;
+}
+
+.imagePreview {
+    display: none;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: #4caf50;
+    color: white;
+    font-size: clamp(14px, 3vw, 18px);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-delete-confirm {
+    background-color: #f44336;
+    color: white;
+    font-size: clamp(14px, 3vw, 18px);
+    padding: 10px 20px;
+    border: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-delete-confirm:hover {
+    background: #d32f2f;
+}
+
+.btn-cancel {
+    width: 100;
+    background-color: #999;
+    color: white;
+    font-size: clamp(14px, 3vw, 18px);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #777;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .products-table {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .products-table table thead tr th,
+    .products-table table tbody tr td {
+        padding: 10px 6px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}
