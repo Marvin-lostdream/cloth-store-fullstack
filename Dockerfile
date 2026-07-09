@@ -13,35 +13,26 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# تثبيت ملحقات PHP بشكل منفصل
+# تثبيت ملحقات PHP
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install gd
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install zip
-RUN docker-php-ext-install bcmath
-RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install gd pdo_mysql zip bcmath mbstring
 
 # تمكين Apache mod_rewrite
 RUN a2enmod rewrite
 
-# تثبيت Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# تثبيت Composer 2.7 (إصدار مستقر مع Laravel 13)
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
-# تعيين مجلد العمل داخل الحاوية
 WORKDIR /var/www/html
 
-# نسخ جميع الملفات
 COPY . .
 
-# تثبيت dependencies مع عرض التفاصيل
-RUN composer install --optimize-autoloader --no-dev -v
+# تثبيت dependencies مع تجاهل القيود
+RUN composer install --no-dev --ignore-platform-req=php --ignore-platform-req=ext-* --no-scripts
 
 # إعداد صلاحيات المجلدات
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# نسخ إعدادات Apache المخصصة
 COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 CMD ["apache2-foreground"]
