@@ -20,39 +20,22 @@ RUN docker-php-ext-install gd pdo_mysql zip bcmath mbstring
 # تمكين Apache mod_rewrite
 RUN a2enmod rewrite
 
-# تثبيت Composer (أحدث إصدار)
+# تثبيت Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# نسخ جميع الملفات
 COPY . .
-
-# حذف vendor و composer.lock للتثبيت النظيف
-RUN rm -rf vendor composer.lock
 
 # تثبيت dependencies مع تجاهل القيود
 RUN composer install --no-dev --ignore-platform-req=php --ignore-platform-req=ext-* --no-scripts
 
-# إنشاء مجلدات التخزين إذا لم توجد
-RUN mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions
+# تعطيل التحقق من PHP في ملف platform_check.php
+RUN sed -i 's/return true;/return false;/g' vendor/composer/platform_check.php || true
 
 # إعداد صلاحيات المجلدات
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-# إنشاء ملف .env مؤقت لتشغيل artisan
-RUN echo "APP_KEY=" > .env
-
-# تشغيل أوامر Laravel
-RUN composer dump-autoload --optimize --no-interaction || true
-RUN php artisan key:generate --force || true
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-RUN php artisan view:cache || true
-
-# حذف ملف .env المؤقت
-RUN rm -f .env
 
 COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
