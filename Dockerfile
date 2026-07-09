@@ -11,7 +11,10 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql zip bcmath mbstring exif
+    && docker-php-ext-install gd pdo pdo_mysql zip bcmath mbstring
+
+# تثبيت exif بشكل منفصل
+RUN docker-php-ext-install exif
 
 # تمكين Apache mod_rewrite
 RUN a2enmod rewrite
@@ -22,11 +25,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # تعيين مجلد العمل داخل الحاوية
 WORKDIR /var/www/html
 
-# نسخ جميع الملفات أولاً
+# نسخ جميع الملفات
 COPY . .
 
-# تثبيت dependencies مع عرض التفاصيل
-RUN composer install --optimize-autoloader --no-dev -v
+# تثبيت dependencies
+RUN composer install --optimize-autoloader --no-dev
 
 # إعداد صلاحيات المجلدات
 RUN chown -R www-data:www-data /var/www/html \
