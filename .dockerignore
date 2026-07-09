@@ -1,0 +1,15 @@
+.env
+.git
+.gitignore
+.github
+.gitattributes
+.vscode
+.idea
+node_modules
+vendor
+storage/*.key
+*.log
+public/hot
+public/storage
+.DS_Store
+Thumbs.db
