@@ -105,7 +105,7 @@ $hideFooter = true;
             <h2>إضافة منتج</h2>
             <button class="close-btn" onclick="closeModal('addModal')">&times;</button>
         </div>
-        <form action="{{ route('product.create') }}" id="addForm" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('product.create') }}" id="addForm" method="POST">
             @csrf
             <div class="form-group">
                 <label>اسم المنتج</label>
@@ -116,9 +116,9 @@ $hideFooter = true;
                 <input type="number" name="price" step="0.01" required />
             </div>
             <div class="form-group">
-                <label>رابط الصورة (Google Drive / ImgBB)</label>
+                <label>رابط الصورة (ImgBB / Google Drive)</label>
                 <input type="url" name="image" placeholder="https://i.ibb.co/xxx/image.jpg" required />
-                <small style="color: #666; display: block; margin-top: 5px;">📸 أدخل الرابط المباشر للصورة من ImgBB أو Google Drive</small>
+                <small style="color: #666; display: block; margin-top: 5px;">📸 أدخل الرابط المباشر للصورة</small>
             </div>
             <div class="form-group">
                 <label>التوفر</label>
@@ -173,7 +173,7 @@ $hideFooter = true;
             <h2>تعديل المنتج</h2>
             <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
         </div>
-        <form id="editForm" method="POST" enctype="multipart/form-data">
+        <form id="editForm" method="POST">
             @csrf
             @method('PUT')
             <input type="hidden" id="edit_id" name="id">
