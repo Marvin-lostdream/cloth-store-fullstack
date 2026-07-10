@@ -256,6 +256,70 @@ function productCard(product) {
     });
 }
 
+let search = document.getElementById("search");
+
+search.addEventListener("input", () => {
+    const value = search.value.toLowerCase().trim();
+    const productsContainer = document.querySelector(".products");
+
+    let msg = document.getElementById("msgNotFound");
+    if (msg) msg.remove();
+
+    if (value === "") {
+        let path = window.location.pathname;
+        let targetCategory;
+        let defaultSection;
+
+        if (path === "/men") {
+            targetCategory = "men";
+            defaultSection = "shirts";
+        } else if (path === "/women") {
+            targetCategory = "women";
+            defaultSection = "shirts";
+        } else if (path === "/kids") {
+            targetCategory = "kids";
+            defaultSection = "shirts";
+        } else if (path === "/accessories") {
+            targetCategory = "accessories";
+            defaultSection = "accessories";
+        }
+        displayProducts(targetCategory, defaultSection);
+        return;
+    }
+
+    let path = window.location.pathname;
+    let category = "men";
+
+    if (path === "/men") category = "men";
+    else if (path === "/women") category = "women";
+    else if (path === "/kids") category = "kids";
+    else if (path === "/accessories") category = "accessories";
+
+    fetchProducts(category)
+        .then((allProducts) => {
+            productsContainer.innerHTML = "";
+
+            let found = false;
+
+            allProducts.forEach((product) => {
+                if (product.name.toLowerCase().includes(value)) {
+                    productCard(product);
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                productsContainer.insertAdjacentHTML(
+                    "afterend",
+                    `<p id="msgNotFound" style="text-align:center; color:red; margin-bottom:30px;">🔍 لا توجد منتجات تطابق "${value}"</p>`,
+                );
+            }
+        })
+        .catch((error) => {
+            console.log("Error searching:", error);
+        });
+});
+
 let btnAdded = false;
 
 window.onscroll = () => {
