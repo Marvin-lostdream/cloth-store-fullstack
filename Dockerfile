@@ -43,7 +43,15 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-# 🔥 إنشاء رابط التخزين
+# 🔥 إنشاء رابط التخزين (طريقة 1)
 RUN php artisan storage:link || true
+
+# 🔥🔥 الطريقة الأفضل: إنشاء رابط رمزي مباشرة (طريقة 2)
+RUN rm -rf public/storage && \
+    ln -s /var/www/html/storage/app/public /var/www/html/public/storage
+
+# 🔥 إعطاء الصلاحيات للمجلدات
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/public/storage
+RUN chmod -R 775 /var/www/html/storage /var/www/html/public/storage
 
 CMD bash -c "php artisan migrate --force || true && apache2-foreground"
