@@ -1,18 +1,14 @@
 @extends('layouts.app')
 
-
 @php
 $hideFooter = true;
 @endphp
-
 
 @push('style')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}" />
 @endpush
 
 @section('title' , "CTS | لوحة التحكم")
-
-
 
 @section('content')
 <div class="products-table" dir="rtl">
@@ -36,13 +32,12 @@ $hideFooter = true;
         </thead>
         <tbody>
             @forelse($products as $index => $product)
-
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $product->name }}</td>
                 <td>
                     @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="50" height="50" style="object-fit: cover; border-radius: 5px;">
+                    <img src="{{ $product->image }}" alt="{{ $product->name }}" width="50" height="50" style="object-fit: cover; border-radius: 5px;">
                     @else
                     <span style="color: #999;">لا توجد صورة</span>
                     @endif
@@ -57,7 +52,6 @@ $hideFooter = true;
                     @default أخرى
                     @endswitch
                 </td>
-
                 <td>
                     @switch($product->type)
                     @case('shirts') قمصان @break
@@ -71,8 +65,6 @@ $hideFooter = true;
                     @default أخرى
                     @endswitch
                 </td>
-
-
                 <td><span class="status {{ $product->is_available ? 'active' : 'inactive' }}">
                         {{ $product->is_available ? 'متوفر' : 'غير متوفر' }}
                     </span>
@@ -99,13 +91,9 @@ $hideFooter = true;
                 </td>
             </tr>
             @endforelse
-
-
         </tbody>
     </table>
 </div>
-
-
 
 <!-- ======================= -->
 <!-- ====== Add Modal ====== -->
@@ -128,11 +116,9 @@ $hideFooter = true;
                 <input type="number" name="price" step="0.01" required />
             </div>
             <div class="form-group">
-                <label>صورة المنتج</label>
-                <input type="file" name="image" accept="image/*" onchange="previewImage(event , 'addImagePreview')" />
-                <div style="margin-top: 10px;">
-                    <img id="addImagePreview" class="imagePreview" src="#" alt="معاينة الصورة">
-                </div>
+                <label>رابط الصورة (Google Drive / ImgBB)</label>
+                <input type="url" name="image" placeholder="https://i.ibb.co/xxx/image.jpg" required />
+                <small style="color: #666; display: block; margin-top: 5px;">📸 أدخل الرابط المباشر للصورة من ImgBB أو Google Drive</small>
             </div>
             <div class="form-group">
                 <label>التوفر</label>
@@ -141,7 +127,6 @@ $hideFooter = true;
                     <option value="0">غير متوفر</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>التصنيف</label>
                 <select name="category">
@@ -152,7 +137,6 @@ $hideFooter = true;
                     <option value="other">أخرى</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>نوع المنتج</label>
                 <select name="type">
@@ -167,7 +151,6 @@ $hideFooter = true;
                     <option value="other">أخرى</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>هل يوجد خصم</label>
                 <select name="has_discount">
@@ -180,12 +163,9 @@ $hideFooter = true;
     </div>
 </div>
 
-
-
 <!-- ======================= -->
 <!-- ====== Edit Modal ====== -->
 <!-- ======================= -->
-
 
 <div id="editModal" class="modal">
     <div class="modal-content">
@@ -193,39 +173,26 @@ $hideFooter = true;
             <h2>تعديل المنتج</h2>
             <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
         </div>
-
         <form id="editForm" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-
             <input type="hidden" id="edit_id" name="id">
-
             <div class="form-group">
                 <label>اسم المنتج</label>
                 <input type="text" name="name" id="edit_name" required />
             </div>
-
             <div class="form-group">
                 <label>سعر المنتج (ل.س)</label>
                 <input type="number" name="price" step="0.01" id="edit_price" required />
             </div>
-
             <div class="form-group">
                 <label>الصورة الحالية</label>
                 <img id="edit_current_img" src="" alt="الصورة الحالية"
                     style="max-width: 150px; max-height: 150px; object-fit: cover; border-radius: 5px; display: none;">
-
-                <label style="display: block; margin-top: 10px;">تغيير الصورة (اختياري)</label>
-                <input type="file" name="image" accept="image/*"
-                    onchange="previewImage(event, 'editImagePreview')" />
-
-                <div style="margin-top: 10px;">
-                    <img id="editImagePreview" class="imagePreview"
-                        src="#" alt="معاينة الصورة الجديدة"
-                        style="display: none; max-width: 150px; max-height: 150px; object-fit: cover; border-radius: 5px;">
-                </div>
+                <label style="display: block; margin-top: 10px;">تغيير رابط الصورة (اختياري)</label>
+                <input type="url" name="image" id="edit_image" placeholder="https://i.ibb.co/xxx/image.jpg" />
+                <small style="color: #666; display: block; margin-top: 5px;">📸 أدخل الرابط المباشر للصورة الجديدة (اختياري)</small>
             </div>
-
             <div class="form-group">
                 <label>التوفر</label>
                 <select name="is_available" id="edit_is_available">
@@ -233,7 +200,6 @@ $hideFooter = true;
                     <option value="0">غير متوفر</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>التصنيف</label>
                 <select name="category" id="edit_category">
@@ -244,7 +210,6 @@ $hideFooter = true;
                     <option value="other">أخرى</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>نوع المنتج</label>
                 <select name="type" id="edit_type">
@@ -259,7 +224,6 @@ $hideFooter = true;
                     <option value="other">أخرى</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>هل يوجد خصم</label>
                 <select name="has_discount" id="edit_has_discount">
@@ -267,7 +231,6 @@ $hideFooter = true;
                     <option value="1">نعم</option>
                 </select>
             </div>
-
             <div style="display: flex; gap: 10px; margin-top: 20px;">
                 <button type="submit" class="btn-submit">تحديث المنتج</button>
                 <button type="button" class="btn-cancel" onclick="closeModal('editModal')">إلغاء</button>
@@ -276,11 +239,9 @@ $hideFooter = true;
     </div>
 </div>
 
-
 <!-- ======================= -->
 <!-- ====== Delete Modal ====== -->
 <!-- ======================= -->
-
 
 <div id="deleteModal" class="modal">
     <div class="modal-content">
@@ -290,7 +251,6 @@ $hideFooter = true;
         </div>
         <div style="text-align:center; display: flex; justify-content:center; flex-direction: column;">
             <p style="font-size:18px; margin:20px 0;">هل انت متأكد من حذف المنتج <strong id="delete_product_name"></strong>?</p>
-
             <form dir="auto" id="deleteForm" action="" method="POST" style="display: flex; justify-content: space-between; align-items:center">
                 @csrf
                 @method('DELETE')
@@ -301,12 +261,7 @@ $hideFooter = true;
     </div>
 </div>
 
-
-
 @endsection
-
-
-
 
 @push('script')
 <script src="{{ asset('js/dashboard.js') }}"></script>
