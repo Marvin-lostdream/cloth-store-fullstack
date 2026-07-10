@@ -26,25 +26,10 @@ RUN composer install --no-dev --ignore-platform-req=php --ignore-platform-req=ex
 
 RUN composer dump-autoload --optimize --no-interaction
 
-# 🔥 إنشاء ملف .env
-RUN echo "APP_ENV=production" > .env && \
-    echo "APP_DEBUG=false" >> .env && \
-    echo "APP_KEY=$(php artisan key:generate --show)" >> .env && \
-    echo "DB_CONNECTION=mysql" >> .env && \
-    echo "DB_HOST=mysql-9de32b0-marvinwork001-4e00.e.aivencloud.com" >> .env && \
-    echo "DB_PORT=20655" >> .env && \
-    echo "DB_DATABASE=defaultdb" >> .env && \
-    echo "DB_USERNAME=avnadmin" >> .env && \
-    echo "DB_PASSWORD=your_password" >> .env
-
-# 🔥 تشغيل الترحيلات (مع عرض الأخطاء)
-RUN php artisan migrate --force --verbose || exit 1
-
-RUN php artisan storage:link || true
-
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-CMD ["apache2-foreground"]
+# 🔥 تشغيل الأوامر عند بدء الحاوية
+CMD bash -c "php artisan migrate --force || true && apache2-foreground"
