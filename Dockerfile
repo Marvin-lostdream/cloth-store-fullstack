@@ -32,9 +32,18 @@ RUN composer dump-autoload --optimize --no-interaction
 RUN npm install
 RUN npm run build
 
+# 🔥 إنشاء مجلدات التخزين إذا لم تكن موجودة
+RUN mkdir -p storage/app/public \
+    storage/framework/views \
+    storage/framework/cache \
+    storage/framework/sessions
+
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
+
+# 🔥 إنشاء رابط التخزين
+RUN php artisan storage:link || true
 
 CMD bash -c "php artisan migrate --force || true && apache2-foreground"
