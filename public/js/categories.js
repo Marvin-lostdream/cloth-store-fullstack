@@ -309,10 +309,10 @@ search.addEventListener("input", () => {
             });
 
             if (!found) {
-                productsContainer.insertAdjacentHTML(
-                    "afterend",
-                    `<p id="msgNotFound" style="text-align:center; color:red; margin-bottom:30px;">🔍 لا توجد منتجات تطابق "${value}"</p>`,
-                );
+                let existingMsg = document.getElementById("msgNotFound");
+                if (existingMsg) existingMsg.remove();
+
+                productsContainer.innerHTML = `<p id="msgNotFound" style="text-align:center; color:red; margin-bottom:30px;">🔍 لا توجد منتجات تطابق "${value}"</p>`;
             }
         })
         .catch((error) => {
