@@ -37,9 +37,9 @@ RUN echo "APP_ENV=production" > .env && \
     echo "DB_USERNAME=avnadmin" >> .env && \
     echo "DB_PASSWORD=your_password" >> .env
 
-# 🔥 تشغيل فقط الأوامر الأساسية مع تجاهل الأخطاء
-RUN php artisan config:clear || true
-RUN php artisan migrate --force || true
+# 🔥 تشغيل الترحيلات (مع عرض الأخطاء)
+RUN php artisan migrate --force --verbose || exit 1
+
 RUN php artisan storage:link || true
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
