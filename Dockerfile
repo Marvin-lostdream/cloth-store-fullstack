@@ -26,7 +26,7 @@ RUN composer install --no-dev --ignore-platform-req=php --ignore-platform-req=ex
 
 RUN composer dump-autoload --optimize --no-interaction
 
-# 🔥 إنشاء ملف .env من متغيرات البيئة
+# 🔥 إنشاء ملف .env
 RUN echo "APP_ENV=production" > .env && \
     echo "APP_DEBUG=false" >> .env && \
     echo "APP_KEY=$(php artisan key:generate --show)" >> .env && \
@@ -37,12 +37,10 @@ RUN echo "APP_ENV=production" > .env && \
     echo "DB_USERNAME=avnadmin" >> .env && \
     echo "DB_PASSWORD=your_password" >> .env
 
-# 🔥 الآن تشغيل أوامر Laravel
-RUN php artisan config:clear
-RUN php artisan cache:clear
-RUN php artisan view:clear
-RUN php artisan migrate --force
-RUN php artisan storage:link
+# 🔥 تشغيل فقط الأوامر الأساسية مع تجاهل الأخطاء
+RUN php artisan config:clear || true
+RUN php artisan migrate --force || true
+RUN php artisan storage:link || true
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
