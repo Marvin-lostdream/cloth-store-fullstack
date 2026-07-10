@@ -31,7 +31,6 @@
             <h3>: ملابس أطفال</h3>
             <ul>
                 <li data-section="shoes">أحذية</li>
-                <li data-section="pants">بناطيل</li>
                 <li class="active" data-section="shirts">قمصان</li>
             </ul>
         </div>
