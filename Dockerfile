@@ -6,14 +6,13 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libzip-dev \
     libonig-dev \
-    libpq-dev \
     unzip \
     git \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install gd pdo_pgsql pgsql zip bcmath mbstring
+RUN docker-php-ext-install gd pdo_mysql zip bcmath mbstring
 
 RUN a2enmod rewrite
 
