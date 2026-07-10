@@ -29,6 +29,17 @@ RUN composer dump-autoload --optimize --no-interaction
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+# 🔥 تشغيل أوامر Laravel (بدون الحاجة لـ Shell)
+RUN php artisan config:clear
+RUN php artisan cache:clear
+RUN php artisan view:clear
+
+# ⭐ الأمر الأهم: تشغيل الترحيلات
+RUN php artisan migrate --force
+
+# إنشاء رابط التخزين
+RUN php artisan storage:link
+
 COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 CMD ["apache2-foreground"]
