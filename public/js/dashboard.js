@@ -119,9 +119,9 @@ window.onclick = (e) => {
 
 // إظهار الصورة عند الإضافة والتعديل
 
-function previewImage(previewId , e) {
+function previewImage(previewId, e) {
     const preview = document.getElementById(previewId);
-    const input = event.target;
+    const input = e.target;
     const url = input.value.trim();
 
     if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
