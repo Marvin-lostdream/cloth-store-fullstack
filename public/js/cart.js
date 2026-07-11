@@ -113,29 +113,57 @@ document.querySelector(".payBtn")?.addEventListener("click", function () {
         return;
     }
 
+    const token = document.querySelector('meta[name="csrf-token"]');
+    if (!token) {
+        alert("❌ CSRF Token غير موجود في الصفحة");
+        return;
+    }
+
     fetch("/checkout", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
-                .content,
+            "X-CSRF-TOKEN": token.content,
         },
         body: JSON.stringify({ items: cart }),
     })
-        .then((response) => response.json())
+        .then((response) => {
+            // عرض تفاصيل الاستجابة
+            console.log("Status:", response.status);
+            console.log("Headers:", response.headers);
+
+            if (!response.ok) {
+                // إذا كان الخطأ 419 (CSRF) أو 401 (غير مسجل)
+                if (response.status === 419) {
+                    throw new Error("انتهت صلاحية الجلسة. يرجى تحديث الصفحة.");
+                }
+                if (response.status === 401) {
+                    throw new Error("يرجى تسجيل الدخول أولاً");
+                }
+                if (response.status === 500) {
+                    return response.text().then((text) => {
+                        throw new Error(
+                            "خطأ في الخادم: " + text.substring(0, 200),
+                        );
+                    });
+                }
+                throw new Error("خطأ في الطلب: " + response.status);
+            }
+            return response.json();
+        })
         .then((data) => {
             if (data.success) {
                 cart = [];
                 localStorage.removeItem("cart");
-                alert(" تم إتمام الطلب بنجاح!");
+                alert("✅ تم إتمام الطلب بنجاح!");
                 window.location.reload();
             } else {
                 alert(data.message);
             }
         })
         .catch((error) => {
-            alert("حدث خطأ في الاتصال");
-            console.error(error);
+            alert("❌ خطأ: " + error.message);
+            console.error("Full error:", error);
         });
 });
 
