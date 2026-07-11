@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'front.index')->name('home');
 
+
+Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
 // ======= Cart Page =======
 Route::get('/cart', function () {

@@ -113,7 +113,7 @@ document.querySelector(".payBtn")?.addEventListener("click", function () {
         return;
     }
 
-    fetch("api/checkout", {
+    fetch("/checkout", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
