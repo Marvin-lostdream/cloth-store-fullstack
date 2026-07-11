@@ -41,7 +41,7 @@ function openEditModal(productId) {
             // عرض الصورة الحالية
             const currentImg = document.getElementById("edit_current_img");
             if (product.image) {
-                currentImg.src = `/storage/${product.image}`;
+                currentImg.src = product.image;
                 currentImg.style.display = "block";
             } else {
                 currentImg.style.display = "none";
@@ -119,18 +119,17 @@ window.onclick = (e) => {
 
 // إظهار الصورة عند الإضافة والتعديل
 
-function previewImage(e, previewId) {
-    const input = e.target;
+function previewImage(previewId) {
     const preview = document.getElementById(previewId);
+    const url = input.value.trim();
 
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            preview.src = e.target.result;
-            preview.style.display = "block";
-        };
-
-        reader.readAsDataURL(input.files[0]);
+    if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
+        preview.src = url;
+        preview.style.display = "block";
+        preview.style.maxWidth = "150px";
+        preview.style.maxHeight = "150px";
+        preview.style.objectFit = "cover";
+        preview.style.borderRadius = "5px";
     } else {
         preview.src = "#";
         preview.style.display = "none";

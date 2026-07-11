@@ -117,8 +117,7 @@ $hideFooter = true;
             </div>
             <div class="form-group">
                 <label>رابط الصورة (ImgBB / Google Drive)</label>
-                <input type="url" name="image" placeholder="https://i.ibb.co/xxx/image.jpg" required />
-                <small style="color: #666; display: block; margin-top: 5px;">📸 أدخل الرابط المباشر للصورة</small>
+                <input type="url" name="image" placeholder="https://i.ibb.co/xxx/image.jpg" oninput="previewImageFromUrl(addModal)" required />
             </div>
             <div class="form-group">
                 <label>التوفر</label>
@@ -190,8 +189,7 @@ $hideFooter = true;
                 <img id="edit_current_img" src="" alt="الصورة الحالية"
                     style="max-width: 150px; max-height: 150px; object-fit: cover; border-radius: 5px; display: none;">
                 <label style="display: block; margin-top: 10px;">تغيير رابط الصورة (اختياري)</label>
-                <input type="url" name="image" id="edit_image" placeholder="https://i.ibb.co/xxx/image.jpg" />
-                <small style="color: #666; display: block; margin-top: 5px;">📸 أدخل الرابط المباشر للصورة الجديدة (اختياري)</small>
+                <input type="url" name="image" id="edit_image" placeholder="https://i.ibb.co/xxx/image.jpg" oninput="previewImageFromUrl(editModal)" />
             </div>
             <div class="form-group">
                 <label>التوفر</label>

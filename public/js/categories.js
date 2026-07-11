@@ -137,12 +137,8 @@ function productCard(product) {
     const img = document.createElement("img");
 
     let imagePath = product.image;
-    if (
-        !imagePath.startsWith("http") &&
-        !imagePath.startsWith("/") &&
-        !imagePath.startsWith("storage/")
-    ) {
-        imagePath = `/storage/${imagePath}`;
+    if (!imagePath.startsWith("http")) {
+        imagePath = product.image;
     }
 
     img.src = imagePath;
