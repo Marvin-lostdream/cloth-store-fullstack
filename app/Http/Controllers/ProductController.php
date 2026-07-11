@@ -61,20 +61,22 @@ class ProductController extends Controller
 
 
     //  إضافة منتج جديد لقاعدة البيانات
-    public function createProduct(ProductRequest $request)
+    public function createProduct(Request $request)
     {
-
         try {
-            $product = product::create([
-                ...$request->validated(),
-                'image' =>
-                $request->hasFile('image') ?
-                    $request->file('image')->store('products', 'public')
-                    : null,
-                'is_available' => $request->boolean('is_available', true),
-                'has_discount' => $request->boolean('has_discount', false),
-            ]);
-            return redirect('admin/dashboard')->with('success', "تمت إضافة المنتج {$request->input('name')} بنجاح");
+            $product = new Product();
+            $product->name = $request->name;
+            $product->price = $request->price;
+            $product->image = $request->image;
+            $product->category = $request->category;
+            $product->type = $request->type;
+            $product->is_available = $request->boolean('is_available', true);
+            $product->has_discount = $request->boolean('has_discount', false);
+
+
+            $product->save();
+
+            return redirect('admin/dashboard')->with('success', "تمت إضافة المنتج {$request->name} بنجاح");
         } catch (Exception $e) {
             return back()->with('error', 'حدث خطأ: ' . $e->getMessage());
         }
@@ -91,23 +93,20 @@ class ProductController extends Controller
     }
 
 
-    public function editProduct(ProductRequest $request, $id)
+    public function editProduct(Request $request, $id)
     {
         try {
             $product = Product::findOrFail($id);
 
-            $validated = $request->validated();
+            $product->name = $request->name;
+            $product->price = $request->price;
+            $product->category = $request->category;
+            $product->type = $request->type;
+            $product->is_available = $request->boolean('is_available', true);
+            $product->has_discount = $request->boolean('has_discount', false);
 
-            $product->update($validated);
-
-
-            if ($request->hasFile('image')) {
-                if ($product->image && Storage::disk('public')->exists($product->image)) {
-                    Storage::disk('public')->delete($product->image);
-                }
-
-                $imagePath = $request->file('image')->store('products', 'public');
-                $product->image = $imagePath;
+            if ($request->filled('image')) {
+                $product->image = $request->image;
             }
 
             $product->save();
@@ -123,12 +122,6 @@ class ProductController extends Controller
         try {
             $product = Product::findOrFail($id);
 
-            // حذف الصورة من التخزين
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
-            }
-
-            // حذف المنتج
             $product->delete();
 
             return redirect('admin/dashboard')->with('success', "تم حذف المنتج بنجاح");
