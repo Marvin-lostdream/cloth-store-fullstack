@@ -28,13 +28,10 @@ RUN composer install --no-dev --ignore-platform-req=php --ignore-platform-req=ex
 
 RUN composer dump-autoload --optimize --no-interaction
 
-# 🔥 تثبيت dependencies الخاصة بـ Node.js وبناء الأصول
 RUN npm install
 RUN npm run build
 
-# 🔥 إنشاء مجلدات التخزين إذا لم تكن موجودة
-RUN mkdir -p storage/app/public \
-    storage/framework/views \
+RUN mkdir -p storage/framework/views \
     storage/framework/cache \
     storage/framework/sessions
 
@@ -42,16 +39,5 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
-
-# 🔥 إنشاء رابط التخزين (طريقة 1)
-RUN php artisan storage:link || true
-
-# 🔥🔥 الطريقة الأفضل: إنشاء رابط رمزي مباشرة (طريقة 2)
-RUN rm -rf public/storage && \
-    ln -s /var/www/html/storage/app/public /var/www/html/public/storage
-
-# 🔥 إعطاء الصلاحيات للمجلدات
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/public/storage
-RUN chmod -R 775 /var/www/html/storage /var/www/html/public/storage
 
 CMD bash -c "php artisan migrate --force || true && apache2-foreground"
