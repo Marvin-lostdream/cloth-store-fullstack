@@ -70,7 +70,7 @@ function displayCart() {
         const div = document.createElement("div");
         div.classList.add("cart");
         div.innerHTML = `
-            <img src="${item.image ? "/storage/" + item.image : "/img/default.png"}" alt="${item.name}" />
+            <img src="${item.image ? item.image : "/img/default.png"}" alt="${item.name}" />
             <h3>${item.name}</h3>
             <div class="info">
                 <p>السعر: <span>${item.price} ل.س</span></p>
