@@ -16,83 +16,85 @@ $hideFooter = true;
         <h2>المنتجات</h2>
         <button onclick="openModal('addModal')">إضافة منتج جديد ➕</button>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>الاسم</th>
-                <th>الصورة</th>
-                <th>السعر</th>
-                <th>التصنيف</th>
-                <th>النوع</th>
-                <th>الحالة</th>
-                <th>الخصم</th>
-                <th>الإجراءات</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($products as $index => $product)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $product->name }}</td>
-                <td>
-                    @if($product->image)
-                    <img src="{{ $product->image }}" alt="{{ $product->name }}" width="50" height="50" style="object-fit: cover; border-radius: 5px;">
-                    @else
-                    <span style="color: #999;">لا توجد صورة</span>
-                    @endif
-                </td>
-                <td>{{ number_format($product->price , 2) }} ل.س</td>
-                <td>
-                    @switch($product->category)
-                    @case('men') رجالي @break
-                    @case('women') نسائي @break
-                    @case('kids') اطفال @break
-                    @case('accessories') إكسسوارات @break
-                    @default أخرى
-                    @endswitch
-                </td>
-                <td>
-                    @switch($product->type)
-                    @case('shirts') قمصان @break
-                    @case('pants') بناطيل @break
-                    @case('dresses') فساتين @break
-                    @case('shoes') أحذية @break
-                    @case('jackets') جواكت @break
-                    @case('bags') شنط @break
-                    @case('watches') ساعات @break
-                    @case('accessories') إكسسوارات @break
-                    @default أخرى
-                    @endswitch
-                </td>
-                <td><span class="status {{ $product->is_available ? 'active' : 'inactive' }}">
-                        {{ $product->is_available ? 'متوفر' : 'غير متوفر' }}
-                    </span>
-                </td>
-                <td>
-                    @if($product->has_discount)
-                    <span>✅ نعم</span>
-                    @else
-                    <span>❌ لا</span>
-                    @endif
-                </td>
-                <td>
-                    <div class="action-buttons">
-                        <button class="action-btn edit" onclick="openEditModal('{{ $product->id }}')"><i class="fas fa-pencil-alt"></i></button>
-                        <button class="action-btn delete" onclick="openDeleteModal('{{ $product->id }}', '{{ $product->name }}')"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
-                    <p style="font-size: 18px;">📦 لا توجد منتجات</p>
-                    <p>قم بإضافة منتج جديد بالضغط على الزر أعلاه</p>
-                </td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <div style="overflow-x: scroll;">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>الاسم</th>
+                    <th>الصورة</th>
+                    <th>السعر</th>
+                    <th>التصنيف</th>
+                    <th>النوع</th>
+                    <th>الحالة</th>
+                    <th>الخصم</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($products as $index => $product)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td>
+                        @if($product->image)
+                        <img src="{{ $product->image }}" alt="{{ $product->name }}" width="50" height="50" style="object-fit: cover; border-radius: 5px;">
+                        @else
+                        <span style="color: #999;">لا توجد صورة</span>
+                        @endif
+                    </td>
+                    <td>{{ number_format($product->price , 2) }} ل.س</td>
+                    <td>
+                        @switch($product->category)
+                        @case('men') رجالي @break
+                        @case('women') نسائي @break
+                        @case('kids') اطفال @break
+                        @case('accessories') إكسسوارات @break
+                        @default أخرى
+                        @endswitch
+                    </td>
+                    <td>
+                        @switch($product->type)
+                        @case('shirts') قمصان @break
+                        @case('pants') بناطيل @break
+                        @case('dresses') فساتين @break
+                        @case('shoes') أحذية @break
+                        @case('jackets') جواكت @break
+                        @case('bags') شنط @break
+                        @case('watches') ساعات @break
+                        @case('accessories') إكسسوارات @break
+                        @default أخرى
+                        @endswitch
+                    </td>
+                    <td><span class="status {{ $product->is_available ? 'active' : 'inactive' }}">
+                            {{ $product->is_available ? 'متوفر' : 'غير متوفر' }}
+                        </span>
+                    </td>
+                    <td>
+                        @if($product->has_discount)
+                        <span>✅ نعم</span>
+                        @else
+                        <span>❌ لا</span>
+                        @endif
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn edit" onclick="openEditModal('{{ $product->id }}')"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="action-btn delete" onclick="openDeleteModal('{{ $product->id }}', '{{ $product->name }}')"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
+                        <p style="font-size: 18px;">📦 لا توجد منتجات</p>
+                        <p>قم بإضافة منتج جديد بالضغط على الزر أعلاه</p>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- ======================= -->
