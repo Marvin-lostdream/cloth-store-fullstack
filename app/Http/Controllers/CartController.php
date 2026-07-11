@@ -14,18 +14,21 @@ class CartController extends Controller
     // استقبال الطلب من localStorage
     public function checkout(Request $request)
     {
-        $items = $request->items;
-
-        if (empty($items)) {
-            return response()->json(['success' => false, 'message' => 'السلة فارغة']);
-        }
-
-        DB::beginTransaction();
-
         try {
+            $items = $request->items;
 
-        $user = Auth::user();
-            // إنشاء طلب جديد
+            if (empty($items)) {
+                return response()->json(['success' => false, 'message' => 'السلة فارغة']);
+            }
+
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json(['success' => false, 'message' => 'يرجى تسجيل الدخول أولاً'], 401);
+            }
+
+            DB::beginTransaction();
+
             $order = Order::create([
                 'user_id' => $user->id,
                 'status' => 'pending',
@@ -34,7 +37,6 @@ class CartController extends Controller
 
             $total = 0;
 
-            // إضافة المنتجات
             foreach ($items as $item) {
                 $product = Product::find($item['id']);
 
@@ -65,8 +67,10 @@ class CartController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'حدث خطأ: ' . $e->getMessage()
-            ]);
+                'message' => 'خطأ: ' . $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
         }
     }
 }
