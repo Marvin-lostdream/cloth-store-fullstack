@@ -117,7 +117,12 @@ $hideFooter = true;
             </div>
             <div class="form-group">
                 <label>رابط الصورة (ImgBB / Google Drive)</label>
-                <input type="url" name="image" placeholder="https://i.ibb.co/xxx/image.jpg" oninput="previewImage(addModal)" required />
+                <input type="url" name="image" placeholder="https://i.ibb.co/xxx/image.jpg" oninput="previewImage(addImagePreview)" required />
+                <div style="margin-top: 10px;">
+                    <img id="addImagePreview" class="imagePreview"
+                        src="#" alt="معاينة الصورة"
+                        style="display: none; max-width: 150px; max-height: 150px; object-fit: cover; border-radius: 5px;">
+                </div>
             </div>
             <div class="form-group">
                 <label>التوفر</label>
@@ -189,7 +194,12 @@ $hideFooter = true;
                 <img id="edit_current_img" src="" alt="الصورة الحالية"
                     style="max-width: 150px; max-height: 150px; object-fit: cover; border-radius: 5px; display: none;">
                 <label style="display: block; margin-top: 10px;">تغيير رابط الصورة (اختياري)</label>
-                <input type="url" name="image" id="edit_image" placeholder="https://i.ibb.co/xxx/image.jpg" oninput="previewImage(editModal)" />
+                <input type="url" name="image" id="edit_image" placeholder="https://i.ibb.co/xxx/image.jpg" oninput="previewImage(editImagePreview)" />
+                <div style="margin-top: 10px;">
+                    <img id="editImagePreview" class="imagePreview"
+                        src="#" alt="معاينة الصورة الجديدة"
+                        style="display: none; max-width: 150px; max-height: 150px; object-fit: cover; border-radius: 5px;">
+                </div>
             </div>
             <div class="form-group">
                 <label>التوفر</label>
